@@ -173,14 +173,52 @@ flowchart TB
 
 ---
 
-## 12. ルーティングプロトコルのイメージ
+## 12. ルーティングプロトコルのイメージ（改良）
+
+次の図では、複数のルーターが異なるルーティングプロトコルで相互接続されている例を示します。AS#1 (Autonomous System) はOSPFを使用し、AS#2はRIPを使用してそれぞれが内部で経路交換を行い、ASを越えたルーティング情報はBGPを介して交換しています。このように、大規模ネットワークでは用途や設計ポリシーに応じて複数のプロトコルが組み合わさることが多いです。
 
 ```mermaid
 flowchart LR
-    R1((Router1)) -- Routing Info --> R2((Router2))
-    R2 -- Routing Info --> R3((Router3))
-    R3 -- Routing Info --> R1
+    subgraph AS1 ["AS #1 (OSPF)"]
+        R1((Router1)) --- R2((Router2))
+        R2 --- R3((Router3))
+    end
+
+    subgraph AS2 ["AS #2 (RIP)"]
+        R4((Router4)) --- R5((Router5))
+        R5 --- R6((Router6))
+    end
+
+    %% BGPセクション：AS間の経路交換
+    BGP1(("BGP Session")) 
+    BGP2(("BGP Session")) 
+
+    %% 接続関係
+    R3 -- "BGP" --> BGP1
+    BGP1 -- "BGP" --> R4
+    R2 -- "BGP" --> BGP2
+    BGP2 -- "BGP" --> R5
+
+    %% ルータ同士の注釈
+    R1:::ospfStyle
+    R2:::ospfStyle
+    R3:::ospfStyle
+    R4:::ripStyle
+    R5:::ripStyle
+    R6:::ripStyle
 ```
+
+上記の図で示したポイント:  
+1. **AS #1 (OSPF)**: Autonomous System内でOSPFルータが連動して、内部経路をリンク状態ベースで交換。  
+2. **AS #2 (RIP)**: 別のASでは古典的なRIPを使ってホップ数ベースの経路交換を行っている。  
+3. **BGPの利用**: AS間のルータ間ではBGPセッションを確立し、OSPF側とRIP側のネットワークを相互に到達可能にしている。  
+
+#### なぜ複数プロトコルを使うことがあるのか？
+- **歴史的・組織的理由**: 既存環境でRIPが使われている場合、すべてを一度にOSPFへ移行しづらいケースがある。  
+- **ポリシーの違い**: 部門ごとに別の管理方針があり、AS境界でBGPを介した統合を行う。  
+- **運用性や機能要件**: 大規模ASではOSPFのリンク状態型プロトコルが有利だったり、特定サブネットは簡易なRIPで十分だったりする。  
+
+このように、実運用のネットワークでは一つのルーティングプロトコルだけでなく、複数を組み合わせて最適化を図るケースも多々あります。
 
 ---
 
