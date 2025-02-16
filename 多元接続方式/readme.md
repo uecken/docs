@@ -19,12 +19,23 @@
 
 ```mermaid
 graph TD
-    A[IoTデバイス群] -->|OFDMA/DSSS| B[アクセスポイント]
-    B --> C[ネットワーク]
-    D[ESP32デバイス1] -->|802.11ax| B
-    E[ESP32デバイス2] -->|802.11ax| B
-    F[従来デバイス] -->|802.11b| B
+    A[802.11ax AP] -->|OFDMA| B[ESP32C6 #1]
+    A -->|OFDMA| C[ESP32C6 #2]
+    A -->|OFDMA| D[ESP32C6 #3]
+    A -->|802.11b| E[従来デバイス]
+    
+    style A fill:#f9f,stroke:#333
+    style B fill:#bbf,stroke:#333
+    style C fill:#bbf,stroke:#333
+    style D fill:#bbf,stroke:#333
+    style E fill:#ddd,stroke:#333
 ```
+
+### ハードウェア構成
+
+- **アクセスポイント**: 市販の802.11ax対応AP
+- **クライアント**: ESP32C6開発ボード（802.11ax STAモード対応）
+- **従来機器**: 802.11b/g/n対応デバイス
 
 ## 多元接続技術の基礎
 
@@ -63,16 +74,16 @@ graph TD
 - 周波数の有効利用
 
 ### OFDMA (Orthogonal Frequency Division Multiple Access)
-IEEE 802.11axで導入された次世代の多元接続技術です。
+IEEE 802.11axで導入された次世代の多元接続技術です。ESP32C6ではクライアントモードでOFDMAを利用できます。
 
 #### 周波数リソースの割り当て
 
 ```mermaid
 graph LR
-    A[周波数リソース] --> B[サブキャリア割り当て]
-    B --> C[ユーザー1]
-    B --> D[ユーザー2]
-    B --> E[ユーザー3]
+    A[802.11ax AP] --> B[RUの動的割り当て]
+    B --> C[ESP32C6 #1]
+    B --> D[ESP32C6 #2]
+    B --> E[ESP32C6 #3]
     style A fill:#f9f,stroke:#333
     style B fill:#bbf,stroke:#333
 ```
@@ -180,34 +191,37 @@ graph TD
 - SNR測定
 - 干渉耐性の評価
 
-### 3. OFDMA実験
-- リソースユニットの割り当て
-- マルチユーザー接続
+### 3. OFDMA実験（クライアントモード）
+- 802.11ax APへの接続
+- リソースユニットの利用状況モニタリング
 - スペクトル効率の測定
 
 ### プロジェクト構造
 ```
 /
-├── examples/
-│   ├── basic_dsss/
-│   ├── ofdma_test/
-│   └── esp32_wifi/
-├── docs/
-│   └── images/
-└── README.md
+├── basic_dsss/
+├── ofdma_test/
+└── esp32_wifi/
 ```
 
 ## セットアップガイド
 
 ### 必要な環境
 - PlatformIO IDE
-- ESP32開発ボード
+- ESP32C6開発ボード
+- 802.11ax対応AP（市販品）
 - Arduino Framework
 
 ### インストール手順
 1. VSCodeにPlatformIOをインストール
 2. 本リポジトリをクローン
 3. プロジェクトをPlatformIOで開く
+4. 802.11ax APを設定
+
+### APの要件
+- IEEE 802.11ax（Wi-Fi 6）対応
+- OFDMAの有効化
+- 2.4GHz帯のサポート
 
 ## 実験結果の解析
 
