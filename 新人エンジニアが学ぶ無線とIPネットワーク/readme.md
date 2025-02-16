@@ -161,10 +161,10 @@ sequenceDiagram
 ```mermaid
 flowchart TB
     subgraph "スイッチ"
-      PC_A["PC A\n(VLAN10)"]:::vlan10 --> SwitchX
-      PC_B["PC B\n(VLAN10)"]:::vlan10 --> SwitchX
-      PC_C["PC C\n(VLAN20)"]:::vlan20 --> SwitchX
-      PC_D["PC D\n(VLAN20)"]:::vlan20 --> SwitchX
+      PC_A["PC A (VLAN10)"]:::vlan10 --> SwitchX
+      PC_B["PC B (VLAN10)"]:::vlan10 --> SwitchX
+      PC_C["PC C (VLAN20)"]:::vlan20 --> SwitchX
+      PC_D["PC D (VLAN20)"]:::vlan20 --> SwitchX
     end
     SwitchX --> RouterX["ルーター"]
     classDef vlan10 fill:#ffefba,stroke:#f77,stroke-width:1px;
@@ -190,12 +190,12 @@ flowchart LR
 graph TB
     subgraph "Office LAN"
       direction LR
-      SW_main["コアスイッチ"] -- "VLAN10(社内LAN)" --> PC_Group["社員PC\n(多数)"]
+      SW_main["コアスイッチ"] -- "VLAN10(社内LAN)" --> PC_Group["社員PC (多数)"]
       SW_main -- "VLAN20(ゲストLAN)" --> GuestAP["ゲスト用AP"]
       SW_main -- "サーバLAN" --> FileSrv["ファイルサーバ"]
       SW_main -- "社内Wi-Fi" --> CorpAP["社内用AP"]
     end
-    RouterGW["ルーター\nゲートウェイ"] --> SW_main
+    RouterGW["ルーター ゲートウェイ"] --> SW_main
     RouterGW --> FW["ファイアウォール"]
     FW --> InternetISP["インターネット"]
 ```
@@ -209,14 +209,14 @@ graph TD
     A["トラブル: インターネット不通"] --> B{"物理接続は正常か?"}
     B -- "いいえ" --> B_fix["ケーブル再接続/無線設定確認"]
     B -- "はい" --> C{"IPアドレス取得済みか?"}
-    C -- "いいえ" --> C_fix["DHCPサーバ確認\nor 静的IP設定誤り修正"]
+    C -- "いいえ" --> C_fix["DHCPサーバ確認 or 静的IP設定誤り修正"]
     C -- "はい" --> D{"ゲートウェイにPING応答あり?"}
-    D -- "いいえ" --> D_fix["ルータ/スイッチの障害確認\n（電源・設定・故障）"]
+    D -- "いいえ" --> D_fix["ルータ/スイッチの障害確認（電源・設定・故障）"]
     D -- "はい" --> E{"外部IPにPING応答あり?"}
-    E -- "いいえ" --> E_fix["回線障害 or プロバイダ障害\nルータのWAN設定確認"]
+    E -- "いいえ" --> E_fix["回線障害 or プロバイダ障害 ルータのWAN設定確認"]
     E -- "はい" --> F{"名前解決(DNS)可能?"}
-    F -- "いいえ" --> F_fix["DNSサーバ設定確認\n（代替DNSでテスト）"]
-    F -- "はい" --> G["問題切り分け完了\n対応策の実施"]
+    F -- "いいえ" --> F_fix["DNSサーバ設定確認 （代替DNSでテスト）"]
+    F -- "はい" --> G["問題切り分け完了 対応策の実施"]
 ```
 ---
 
