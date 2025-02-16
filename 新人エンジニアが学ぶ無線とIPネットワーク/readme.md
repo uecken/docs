@@ -161,12 +161,12 @@ sequenceDiagram
 ```mermaid
 flowchart TB
     subgraph "スイッチ"
-      PC_A["PC A (VLAN10)"]:::vlan10 --> SwitchX
-      PC_B["PC B (VLAN10)"]:::vlan10 --> SwitchX
-      PC_C["PC C (VLAN20)"]:::vlan20 --> SwitchX
-      PC_D["PC D (VLAN20)"]:::vlan20 --> SwitchX
+      PC_A["PC A (VLAN10)"]:::vlan10 --> Switch
+      PC_B["PC B (VLAN10)"]:::vlan10 --> Switch
+      PC_C["PC C (VLAN20)"]:::vlan20 --> Switch
+      PC_D["PC D (VLAN20)"]:::vlan20 --> Switch
     end
-    SwitchX --> RouterX["ルーター"]
+    Switch --> RouterX["Router"]
     classDef vlan10 fill:#ffefba,stroke:#f77,stroke-width:1px;
     classDef vlan20 fill:#bae1ff,stroke:#77f,stroke-width:1px;
 ```
